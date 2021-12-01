@@ -15,10 +15,15 @@
             background-color: #ffffff;
             margin: 1%;
             border-radius: 10px;
+            padding: 10px;
         }
 
         h2 {
             text-align: center;
+        }
+
+        ul {
+            list-style: decimal-leading-zero;
         }
 
         li {
@@ -28,6 +33,28 @@
             margin: 1%;
             padding-left: 10px;
         }
+
+        input[type="radio"] {
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            border: 2px solid #1FBED6;
+            background-color: white;
+            -webkit-appearance: none;
+            /*to disable the default appearance of radio button*/
+            -moz-appearance: none;
+        }
+
+        input[type="radio"]:focus {
+            /*no need, if you don't disable default appearance*/
+            outline: none;
+            /*to remove the square border on focus*/
+        }
+
+        input[type="radio"]:checked {
+            /*no need, if you don't disable default appearance*/
+            background-color: #1FBED6;
+        }
     </style>
 </head>
 
@@ -35,21 +62,14 @@
     <div id="centro">
         <h2>Gabarito foda</h2>
         <ul>
-            <li>a</li>
-            <li>a</li>
-            <li>a</li>
-            <li>a</li>
-            <li>a</li>
-            <li>a</li>
-            <li>a</li>
-            <li>a</li>
-            <li>a</li>
-            <li>a</li>
-            <li>a</li>
-            <li>a</li>
-            <li>a</li>
-            <li>a</li>
-            <li>a</li>
+            <li>
+                <input type="radio" name="1" id="a">
+                <span>A</span>
+                <input type="radio" name="1" id="b">
+                <span>B</span>
+                <input type="radio" name="1" id="c">
+                <span>C</span>
+            </li>
         </ul>
     </div>
 </body>
