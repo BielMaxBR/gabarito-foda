@@ -5,10 +5,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>gabaritão</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         body {
             background-color: #bdbdbd;
-            font-family: Arial, Helvetica, sans-serif
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 0%;
+            margin: 0%;
         }
 
         #centro {
@@ -27,11 +30,30 @@
         }
 
         li {
+            font-size: 20px;
+        }
+
+        .question {
             border-style: groove;
             border-radius: 10px;
             border-color: #00000045;
             margin: 1%;
             padding-left: 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+
+        .popup {
+            position: absolute;
+            left: 120px;
+            display: none;
+            background-color: #bdbdbd;
+            border-radius: 10px;
+            max-height: 50px;
+            padding: 10px;
         }
 
         input[type="radio"] {
@@ -55,6 +77,35 @@
             /*no need, if you don't disable default appearance*/
             background-color: #1FBED6;
         }
+
+        /* Style buttons */
+        .btn {
+            background-color: DodgerBlue;
+            /* Blue background */
+            border: none;
+            /* Remove borders */
+            color: white;
+            /* White text */
+            padding: 10px 10px;
+            /* Some padding */
+            font-size: 16px;
+            /* Set a font size */
+            cursor: pointer;
+            /* Mouse pointer on hover */
+
+            margin: 5px;
+        }
+
+        /* Darker background on mouse-over */
+        .btn:hover {
+            background-color: RoyalBlue;
+        }
+
+        @media (max-width: 800px) {
+            body {
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 
@@ -63,15 +114,51 @@
         <h2>Gabarito foda</h2>
         <ul>
             <li>
-                <input type="radio" name="1" id="a">
-                <span>A</span>
-                <input type="radio" name="1" id="b">
-                <span>B</span>
-                <input type="radio" name="1" id="c">
-                <span>C</span>
+                <div class="question">
+                    <button class="btn"><i class="fa fa-bars"></i></button>
+                    <div class="popup">
+                        <input type="text" name="materia" id="d">
+                        <input type="button" value="salvar">
+                    </div>
+                    <input type="radio" name="1" id="a">
+                    <span>A</span>
+                    <input type="radio" name="1" id="b">
+                    <span>B</span>
+                    <input type="radio" name="1" id="c">
+                    <span>C</span>
+                </div>
             </li>
         </ul>
     </div>
+    <script>
+        let activePopup
+        window.onclick = function (event) {
+            let target
+            if (event.path[1].className == "btn" | event.target.className == "btn") {
+                target = event.path.find(el => el.className == "question")
+            }
+            if (activePopup && !(event.path.find(el => el.className == "popup"))) {
+                const input = activePopup.getElementsByTagName("input")[0]
+                input.value = ""
+                activePopup.style.display = "none"
+            }
+            if (target) {
+                const popup = target.getElementsByClassName("popup")[0]
+
+                popup.style.display = "block"
+                activePopup = popup
+                return
+            }
+
+
+            if (event.target.type == "button" && event.target.value == "salvar") {
+                const popup = event.target.parentElement
+                const input = popup.getElementsByTagName("input")[0]
+                input.value = ""
+                popup.style.display = "none"
+            }
+        }
+    </script>
 </body>
 
 </html>
