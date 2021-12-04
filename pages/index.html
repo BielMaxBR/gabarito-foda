@@ -166,6 +166,9 @@
         </ul>
     </div>
     <script>
+        const client = io("https://4000-azure-porcupine-6zdvcvyv.ws-us21.gitpod.io/")
+        const gabarito = document.getElementById('gabarito')
+
         let activePopup
         window.onclick = function (event) {
             let target
@@ -186,28 +189,31 @@
             }
 
 
+            if (event.target.type == "radio") {
+                client.emit("updateAlternativa", event.target.name, event.target.id)
+            }
+
+
             if (event.target.type == "button" && event.target.value == "salvar") {
                 const popup = event.target.parentElement
                 const input = popup.getElementsByTagName("input")[0]
+                client.emit("updateMateria", input.name, input.value)
                 input.value = ""
                 popup.style.display = "none"
             }
         }
 
-        const client = io("https://4000-azure-porcupine-6zdvcvyv.ws-us21.gitpod.io/")
-        const gabarito = document.getElementById('gabarito')
         client.on('connect', _ => {
             console.log("uau entrei no sistema")
         })
 
         client.on('init', list => {
-            console.log('veio algo')
             for (let i = 0; i < Object.keys(list).length; i++) {
                 const newLI = document.createElement('li')
-                newLI.innerHTML = `<div class="question">
+                newLI.innerHTML = `<h3 class="materia"></h3><div class="question">
                     <button class="btn"><i class="fa fa-bars"></i></button>
                     <div class="popup">
-                        <input type="text" name="materia" placeholder="escreva o nome da matéria">
+                        <input type="text" name="${Object.keys(list)[i]}" placeholder="escreva o nome da matéria">
                         <input type="button" value="salvar">
                         </div>
                         ${setAlternatives(Object.keys(list)[i], Object.values(list)[i])}
