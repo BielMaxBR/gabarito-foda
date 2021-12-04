@@ -21,7 +21,7 @@
             padding: 10px;
         }
 
-        h2 {
+        h1 {
             text-align: center;
         }
 
@@ -31,6 +31,7 @@
 
         li {
             font-size: 20px;
+            margin: 5%;
         }
 
         .question {
@@ -83,6 +84,7 @@
             background-color: DodgerBlue;
             /* Blue background */
             border: none;
+            border-radius: 10px;
             /* Remove borders */
             color: white;
             /* White text */
@@ -94,6 +96,7 @@
             /* Mouse pointer on hover */
 
             margin: 5px;
+
         }
 
         /* Darker background on mouse-over */
@@ -101,9 +104,60 @@
             background-color: RoyalBlue;
         }
 
-        @media (max-width: 800px) {
+        @media (max-width: 1000px) {
             body {
                 font-size: 20px;
+            }
+
+            .question {
+                justify-content: space-around;
+            }
+
+            input[type="radio"] {
+                width: 80px;
+                height: 80px;
+                border-radius: 100px;
+                border: 2px solid #1FBED6;
+                background-color: white;
+                -webkit-appearance: none;
+                /*to disable the default appearance of radio button*/
+                -moz-appearance: none;
+            }
+
+            li {
+                font-size: 50px;
+            }
+
+            .btn {
+                padding: 40px 40px;
+                font-size: 50px;
+
+                border-radius: 20px;
+            }
+
+            .popup {
+                left: auto;
+                max-height: none;
+                font-size: 20px;
+                width: 70%;
+                height: 15%;
+            }
+
+            .popup input[type="text"] {
+                border: none;
+                width: 80%;
+                height: 100%;
+                font-size: 30pt;
+            }
+
+            .popup input[type="button"] {
+                width: 18%;
+                height: 100%;
+                font-size: 30pt;
+            }
+
+            .popup input[type="text"]:focus {
+                outline: none;
             }
         }
     </style>
@@ -111,7 +165,7 @@
 
 <body>
     <div id="centro">
-        <h2>Gabarito foda</h2>
+        <h1>Gabarito foda</h1>
         <ul>
             <li>
                 <div class="question">
@@ -120,12 +174,12 @@
                         <input type="text" name="materia" id="d">
                         <input type="button" value="salvar">
                     </div>
-                    <input type="radio" name="1" id="a">
-                    <span>A</span>
-                    <input type="radio" name="1" id="b">
-                    <span>B</span>
-                    <input type="radio" name="1" id="c">
-                    <span>C</span>
+
+                    <span><input type="radio" name="1" id="a">A</span>
+
+                    <span><input type="radio" name="1" id="b">B</span>
+
+                    <span><input type="radio" name="1" id="c">C</span>
                 </div>
             </li>
         </ul>
