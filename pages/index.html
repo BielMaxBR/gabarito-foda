@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>gabaritão</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"
+        integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj"
+        crossorigin="anonymous"></script>
     <style>
         body {
             background-color: #bdbdbd;
@@ -64,46 +67,34 @@
             border: 2px solid #1FBED6;
             background-color: white;
             -webkit-appearance: none;
-            /*to disable the default appearance of radio button*/
             -moz-appearance: none;
         }
 
         input[type="radio"]:focus {
-            /*no need, if you don't disable default appearance*/
             outline: none;
-            /*to remove the square border on focus*/
         }
 
         input[type="radio"]:checked {
-            /*no need, if you don't disable default appearance*/
             background-color: #1FBED6;
         }
 
-        /* Style buttons */
         .btn {
             background-color: DodgerBlue;
-            /* Blue background */
             border: none;
             border-radius: 10px;
-            /* Remove borders */
             color: white;
-            /* White text */
             padding: 10px 10px;
-            /* Some padding */
             font-size: 16px;
-            /* Set a font size */
             cursor: pointer;
-            /* Mouse pointer on hover */
 
             margin: 5px;
 
         }
 
-        /* Darker background on mouse-over */
         .btn:hover {
             background-color: RoyalBlue;
         }
-
+        
         @media (max-width: 1000px) {
             body {
                 font-size: 20px;
@@ -120,7 +111,6 @@
                 border: 2px solid #1FBED6;
                 background-color: white;
                 -webkit-appearance: none;
-                /*to disable the default appearance of radio button*/
                 -moz-appearance: none;
             }
 
@@ -147,17 +137,23 @@
                 border: none;
                 width: 80%;
                 height: 100%;
-                font-size: 30pt;
+                font-size: 25pt;
             }
 
             .popup input[type="button"] {
                 width: 18%;
                 height: 100%;
-                font-size: 30pt;
+                font-size: 25pt;
             }
 
             .popup input[type="text"]:focus {
                 outline: none;
+            }
+        }
+
+        @media (max-width: 958px) {
+            li {
+                font-size: 30px;
             }
         }
     </style>
@@ -166,22 +162,7 @@
 <body>
     <div id="centro">
         <h1>Gabarito foda</h1>
-        <ul>
-            <li>
-                <div class="question">
-                    <button class="btn"><i class="fa fa-bars"></i></button>
-                    <div class="popup">
-                        <input type="text" name="materia" id="d">
-                        <input type="button" value="salvar">
-                    </div>
-
-                    <span><input type="radio" name="1" id="a">A</span>
-
-                    <span><input type="radio" name="1" id="b">B</span>
-
-                    <span><input type="radio" name="1" id="c">C</span>
-                </div>
-            </li>
+        <ul id="gabarito">
         </ul>
     </div>
     <script>
@@ -211,6 +192,38 @@
                 input.value = ""
                 popup.style.display = "none"
             }
+        }
+
+        const client = io("https://4000-azure-porcupine-6zdvcvyv.ws-us21.gitpod.io/")
+        const gabarito = document.getElementById('gabarito')
+        client.on('connect', _ => {
+            console.log("uau entrei no sistema")
+        })
+
+        client.on('init', list => {
+            console.log('veio algo')
+            for (let i = 0; i < Object.keys(list).length; i++) {
+                const newLI = document.createElement('li')
+                newLI.innerHTML = `<div class="question">
+                    <button class="btn"><i class="fa fa-bars"></i></button>
+                    <div class="popup">
+                        <input type="text" name="materia" placeholder="escreva o nome da matéria">
+                        <input type="button" value="salvar">
+                        </div>
+                        ${setAlternatives(Object.keys(list)[i], Object.values(list)[i])}
+                    </div>`
+                gabarito.appendChild(newLI)
+            }
+        })
+
+
+        function setAlternatives(question, value) {
+            const alternativas = ['a', 'b', 'c', 'd', 'e']
+            let returnText = ''
+            for (const letra of alternativas) {
+                returnText += `<span><input type="radio" name="${question}" id="${letra}" ${value == letra ? "checked" : ""}>${letra.toUpperCase()}</span>\n`
+            }
+            return returnText
         }
     </script>
 </body>
