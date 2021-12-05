@@ -14,10 +14,28 @@ io.on('connection', socket => {
     })
     console.log('alguem conectou')
 
-    socket.on('updateAlternativa', (materia, alternativa) => {
-        client.hset("gabarito", `${materia}`, `${alternativa}`)
-        io.emit("updateAlternativa", materia, alternativa)
+    socket.on('updateAlternativa', (questao, alternativa) => {
+        client.hset("gabarito", `${questao}`, `${alternativa}`)
+        io.emit("updateAlternativa", questao, alternativa)
     }) 
+    socket.on('updateMateria', (questao, materia) => {
+        client.hset("materias", `${questao}`, `${materia}`)
+        io.emit("updateMateria", questao, materia)
+    }) 
+    socket.on('download', _ => {
+        client.hgetall("gabarito", (err, value) => {
+            client.hgetall("materias", (err, value2) => {
+                let texto = ''
+                for (const question of Object.keys(value)) {
+                    if (value2[question] != '') {
+                        texto += "\n - " + value2[question] + " -\n\n"
+                    }
+                    texto += `${question}_` + value[question].toUpperCase() + "\n"
+                }
+                socket.emit('download', texto)
+            })
+        })
+    })
 })
 
 io.listen(process.env.PORT || 4000)

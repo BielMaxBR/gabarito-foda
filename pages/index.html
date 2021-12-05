@@ -94,7 +94,7 @@
         .btn:hover {
             background-color: RoyalBlue;
         }
-        
+
         @media (max-width: 1000px) {
             body {
                 font-size: 20px;
@@ -162,12 +162,26 @@
 <body>
     <div id="centro">
         <h1>Gabarito foda</h1>
+        <button onclick="baixarGabarito()">baixe o gabarito aqui</button>
         <ul id="gabarito">
         </ul>
     </div>
     <script>
         const client = io("https://4000-azure-porcupine-6zdvcvyv.ws-us21.gitpod.io/")
         const gabarito = document.getElementById('gabarito')
+
+        function downloadText(filename, text) {
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        }
 
         let activePopup
         window.onclick = function (event) {
@@ -207,10 +221,10 @@
             console.log("uau entrei no sistema")
         })
 
-        client.on('init', list => {
+        client.on('init', (list, materias) => {
             for (let i = 0; i < Object.keys(list).length; i++) {
                 const newLI = document.createElement('li')
-                newLI.innerHTML = `<h3 class="materia"></h3><div class="question">
+                newLI.innerHTML = `<h3 class="materia" id="M${Object.keys(list)[i]}">${materias[Object.keys(list)[i]]}</h3><div class="question">
                     <button class="btn"><i class="fa fa-bars"></i></button>
                     <div class="popup">
                         <input type="text" name="${Object.keys(list)[i]}" placeholder="escreva o nome da matéria">
@@ -222,6 +236,30 @@
             }
         })
 
+        client.on("updateAlternativa", (questao, alternativa) => {
+            const radios = document.getElementsByName(questao)
+            for (const radio of radios) {
+                if (radio.id == alternativa) {
+                    radio.checked = true
+                    return
+                }
+            }
+        })
+
+        client.on("updateMateria", (questao, materia) => {
+            const text = document.getElementById("M" + questao)
+            text.innerText = materia
+        })
+
+        client.on("download", text => {
+            console.log(text)
+            downloadText('gabarito.txt', text)
+        })
+
+        function baixarGabarito() {
+            console.log("clicou")
+            client.emit("download")
+        }
 
         function setAlternatives(question, value) {
             const alternativas = ['a', 'b', 'c', 'd', 'e']
