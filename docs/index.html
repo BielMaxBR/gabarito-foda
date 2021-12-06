@@ -35,7 +35,7 @@
             text-align: center;
         }
 
-        ul {
+        ol {
             list-style: decimal-leading-zero;
         }
 
@@ -173,8 +173,8 @@
     <div id="centro">
         <h1>Gabarito foda</h1>
         <button onclick="baixarGabarito()">baixe o gabarito aqui</button>
-        <ul id="gabarito">
-        </ul>
+        <ol id="gabarito" start="91">
+        </ol>
     </div>
     <script>
         const client = io("https://gabarito-foda.herokuapp.com/")
